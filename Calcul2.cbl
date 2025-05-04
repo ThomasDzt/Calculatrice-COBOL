@@ -207,6 +207,25 @@
                                "Non : N/n"
        
                                ACCEPT WS-CLEAR
+                               EVALUATE TRUE
+                                   WHEN WS-CLEAR = "N " OR "n "
+                                       SET WS-CLEAR-N TO TRUE
+                                       DISPLAY 
+                                       FUNCTION TRIM (WS-EDIT-MEM) 
+
+                                    WHEN WS-CLEAR = "Y " OR "y "
+                                       SET WS-CLEAR-Y TO TRUE
+
+                                       MOVE 0 TO WS-MEMORY
+                                       MOVE WS-MEMORY TO WS-EDIT-MEM
+                                       DISPLAY
+                                       FUNCTION TRIM (WS-EDIT-MEM)
+
+                                   WHEN OTHER
+                                       CONTINUE 
+                               END-EVALUATE
+
+
                            END-PERFORM 
 
                    END-EVALUATE
@@ -229,7 +248,75 @@
                        "Non : N/n"
        
                        ACCEPT WS-CONTINUE
+                       IF WS-CONTINUE = "Y " OR "y "
+
+                           DISPLAY "Effacer la valeur en mémoire ? "
+                           DISPLAY "Oui : Y/y            "
+                           "Non : N/n"
+
+      
+                           ACCEPT WS-CLEAR
+
+                           EVALUATE TRUE 
+
+       
+
+                               WHEN WS-CLEAR = "N " OR "n "
+                                   SET WS-CLEAR-N TO TRUE
+                                   DISPLAY FUNCTION TRIM (WS-EDIT-MEM)
+
+
+       
+
+                               WHEN WS-CLEAR = "Y " OR "y "
+                                   SET WS-CLEAR-Y TO TRUE
+
+                                   MOVE 0 TO WS-MEMORY
+                                   MOVE WS-MEMORY TO WS-EDIT-MEM
+                                   DISPLAY FUNCTION TRIM (WS-EDIT-MEM)   
+
+      
+
+                               WHEN OTHER
+                                   PERFORM UNTIL WS-CLEAR = "Y " OR "y " 
+                                                         OR "N " 
+                                                         OR "n "
+                       
+                                       DISPLAY "Saisie incorrecte"
+                                       DISPLAY 
+                                       "Effacer la valeur en mémoire ?"
+                                       DISPLAY "Oui : Y/y            "
+                                               "Non : N/n"
+       
+                                       ACCEPT WS-CLEAR
+                                       EVALUATE TRUE
+                                           WHEN WS-CLEAR = "N " OR "n "
+                                               SET WS-CLEAR-N TO TRUE
+                                               DISPLAY 
+                                               FUNCTION TRIM 
+                                               (WS-EDIT-MEM) 
+
+                                           WHEN WS-CLEAR = "Y " OR "y "
+                                               SET WS-CLEAR-Y TO TRUE
+
+                                               MOVE 0 TO WS-MEMORY
+                                               MOVE WS-MEMORY 
+                                               TO WS-EDIT-MEM
+                                               DISPLAY
+                                               FUNCTION TRIM 
+                                               (WS-EDIT-MEM)
+
+                                           WHEN OTHER
+                                               CONTINUE 
+                                       END-EVALUATE
+
+
+                                   END-PERFORM 
+
+                           END-EVALUATE
+                       END-IF
                    END-PERFORM
+                   
                        
  
                     
